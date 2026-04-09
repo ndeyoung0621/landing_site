@@ -382,13 +382,13 @@
     <script>
       // S3 CONFIGURATION
       AWS.config.update({
-        accessKeyId: 'YOUR_ACCESS_KEY', // REPLACEME
-        secretAccessKey: 'YOUR_SECRET_KEY', // REPLACEME
-        region: 'YOUR_REGION' // REPLACEME (e.g., 'us-east-1')
+        accessKeyId: 'AKIAQWCUE2HYE7ZJKC5I', 
+        secretAccessKey: 'NJQ2kGBXB2fOvevya89T40xWNJC6cOfecYCrnz6b', 
+        region: 'us-east-2' 
       });
 
       const s3 = new AWS.S3();
-      const BUCKET_NAME = 'YOUR_BUCKET_NAME'; // REPLACEME
+      const BUCKET_NAME = 'wenhook-bucket'; 
 
       const statusEl = document.getElementById("status");
       const buttons = Array.from(document.querySelectorAll(".action-button"));
