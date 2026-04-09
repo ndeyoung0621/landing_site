@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transfer Landing</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1500.0.min.js"></script>
     <style>
       :root {
         --blue: #1f6feb;
@@ -272,7 +273,7 @@
         </div>
         <div class="hero-panel">
           <h2>Connected Repository</h2>
-          <p>MariaDB storage enabled for file history and audit trails.</p>
+          <p>file storage enabled for file history and audit trails.</p>
           <p>Upload both inputs before you send the batch to the bot.</p>
         </div>
       </header>
@@ -353,7 +354,7 @@
           <div class="steps">
             <div class="step">
               <span class="step-number">1</span>
-              <span>Upload style guide and goals doc to MariaDB storage.</span>
+              <span>Upload style guide and goals doc to file storage.</span>
             </div>
             <div class="step">
               <span class="step-number">2</span>
@@ -379,6 +380,16 @@
       <input id="goals-doc-input" type="file" hidden />
     </main>
     <script>
+      // S3 CONFIGURATION
+      AWS.config.update({
+        accessKeyId: 'YOUR_ACCESS_KEY', // REPLACEME
+        secretAccessKey: 'YOUR_SECRET_KEY', // REPLACEME
+        region: 'YOUR_REGION' // REPLACEME (e.g., 'us-east-1')
+      });
+
+      const s3 = new AWS.S3();
+      const BUCKET_NAME = 'YOUR_BUCKET_NAME'; // REPLACEME
+
       const statusEl = document.getElementById("status");
       const buttons = Array.from(document.querySelectorAll(".action-button"));
       const inputMap = {
@@ -397,25 +408,22 @@
       }
 
       async function uploadFile(uploadType, file) {
-        const endpoint =
-          uploadType === "style-guide"
-            ? "/upload/style-guide"
-            : "/upload/goals-doc";
-        const formData = new FormData();
-        formData.append("file", file);
+        setStatus(`Uploading ${file.name} to S3...`);
+        
+        const params = {
+          Bucket: BUCKET_NAME,
+          Key: `${uploadType}/${Date.now()}_${file.name}`,
+          Body: file,
+          ContentType: file.type
+        };
 
-        setStatus(`Uploading ${file.name}...`);
-        const response = await fetch(endpoint, {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(errorText || "Upload failed.");
+        try {
+          await s3.upload(params).promise();
+          setStatus(`${file.name} uploaded to S3.`);
+        } catch (err) {
+          console.error(err);
+          throw new Error(`S3 Upload failed: ${err.message}`);
         }
-
-        setStatus(`${file.name} uploaded.`);
       }
 
       buttons.forEach((button) => {
