@@ -410,16 +410,17 @@
       async function uploadFile(uploadType, file) {
         setStatus(`Uploading ${file.name} to S3...`);
         
+        // Use a fixed key to ensure the previous file is overwritten
         const params = {
           Bucket: BUCKET_NAME,
-          Key: `${uploadType}/${Date.now()}_${file.name}`,
+          Key: `${uploadType}/latest_version`, 
           Body: file,
           ContentType: file.type
         };
 
         try {
           await s3.upload(params).promise();
-          setStatus(`${file.name} uploaded to S3.`);
+          setStatus(`File replaced: ${file.name}`);
         } catch (err) {
           console.error(err);
           throw new Error(`S3 Upload failed: ${err.message}`);
