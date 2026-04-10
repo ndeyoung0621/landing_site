@@ -16,11 +16,10 @@
         --muted: #64748b;
         --card: #ffffff;
         --line: #e2e8f0;
+        --green: #10b981;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
@@ -54,10 +53,7 @@
         margin: 0 0 12px;
       }
 
-      h1 {
-        font-size: clamp(28px, 4vw, 42px);
-        margin: 0 0 12px;
-      }
+      h1 { font-size: clamp(28px, 4vw, 42px); margin: 0 0 12px; }
 
       .subtext {
         margin: 0;
@@ -76,17 +72,6 @@
         gap: 12px;
       }
 
-      .hero-panel h2 {
-        margin: 0;
-        font-size: 18px;
-      }
-
-      .hero-panel p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
       .cards {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -101,7 +86,41 @@
         display: grid;
         gap: 16px;
         box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        position: relative;
+        transition: border-color 0.2s ease;
       }
+
+      .card.file-ready {
+        border-color: var(--green);
+        background: #f0fdf4;
+      }
+
+      .status-check {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        width: 28px;
+        height: 28px;
+        background: var(--line);
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        transition: all 0.2s ease;
+      }
+
+      .card.file-ready .status-check {
+        background: var(--green);
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+      }
+
+      .status-check svg {
+        width: 18px;
+        height: 18px;
+        stroke: white;
+        display: none;
+      }
+
+      .card.file-ready .status-check svg { display: block; }
 
       .card-head {
         display: grid;
@@ -119,33 +138,7 @@
         place-items: center;
       }
 
-      .icon svg {
-        width: 22px;
-        height: 22px;
-        stroke: var(--blue-dark);
-      }
-
-      .card h3 {
-        margin: 0 0 6px;
-        font-size: 18px;
-      }
-
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .card-foot {
-        font-size: 12px;
-        color: var(--muted);
-      }
-
-      .action-group {
-        display: grid;
-        gap: 12px;
-      }
+      .icon svg { width: 22px; height: 22px; stroke: var(--blue-dark); }
 
       .action-button {
         width: 100%;
@@ -154,51 +147,34 @@
         border-radius: 16px;
         background: var(--blue);
         color: #ffffff;
-        font-size: 15px;
-        letter-spacing: 0.3px;
+        font-size: 13px;
+        letter-spacing: 0.8px;
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
-        position: relative;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        transition: all 0.2s ease;
       }
 
       .action-button:hover {
         background: var(--blue-dark);
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(31, 111, 235, 0.3);
       }
 
-      .action-button:focus-visible {
-        outline: none;
-        border-color: var(--blue-soft);
-        box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.35);
+      .action-button.active-selection {
+        background: var(--slate);
+        border-color: var(--blue);
+        box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.2);
       }
 
-      .action-button.selected {
-        background: var(--blue-dark);
-        border-color: var(--blue-soft);
-        box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.25),
-          inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+      .action-button.submit-ready {
+        background: var(--green);
+        animation: pulse 2s infinite;
       }
 
-      .selected-indicator {
-        position: absolute;
-        top: 50%;
-        right: 18px;
-        transform: translateY(-50%);
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #ffffff;
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4),
-          0 0 0 6px rgba(31, 111, 235, 0.6);
-        opacity: 0;
-        transition: opacity 0.2s ease;
-      }
-
-      .action-button.selected .selected-indicator {
-        opacity: 1;
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
       }
 
       .extras {
@@ -212,52 +188,13 @@
         border-radius: 20px;
         background: #ffffff;
         border: 1px solid var(--line);
-        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
         display: grid;
         gap: 12px;
       }
 
-      .panel h4 {
-        margin: 0;
-        font-size: 16px;
-      }
+      .status { font-size: 14px; color: var(--slate); font-weight: 600; }
 
-      .steps {
-        display: grid;
-        gap: 8px;
-      }
-
-      .step {
-        display: grid;
-        grid-template-columns: 28px 1fr;
-        gap: 10px;
-        font-size: 14px;
-        color: var(--slate);
-        align-items: center;
-      }
-
-      .step-number {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: var(--blue-soft);
-        color: var(--blue-dark);
-        display: grid;
-        place-items: center;
-        font-weight: 700;
-      }
-
-      .status {
-        min-height: 20px;
-        font-size: 14px;
-        color: var(--slate);
-      }
-
-      @media (min-width: 640px) {
-        .action-group {
-          grid-template-columns: repeat(1, 1fr);
-        }
-      }
+      [hidden] { display: none !important; }
     </style>
   </head>
   <body>
@@ -266,197 +203,138 @@
         <div>
           <p class="eyebrow">Transfer Intake</p>
           <h1>Submit inputs for the merge request health bot</h1>
-          <p class="subtext">
-            Upload your style guide and goals doc so the bot can map expectations,
-            highlight missing context, and keep reviews aligned.
-          </p>
+          <p class="subtext">Stage your files below. Final submission occurs when you trigger the bot.</p>
         </div>
         <div class="hero-panel">
-          <h2>Connected Repository</h2>
-          <p>file storage enabled for file history and audit trails.</p>
-          <p>Upload both inputs before you send the batch to the bot.</p>
+          <h2>System State</h2>
+          <p>Storage: AWS S3 (wenhook-bucket)</p>
+          <p>Mode: Overwrite Enabled</p>
         </div>
       </header>
 
       <section class="cards">
-        <article class="card">
+        <article class="card" id="card-style-guide">
           <div class="card-head">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <path d="M4 7h10l4 4v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
-                <path d="M14 7v4h4" />
-              </svg>
-            </div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 7h10l4 4v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><path d="M14 7v4h4"/></svg></div>
             <div>
               <h3>Style Guide</h3>
-              <p>Defines voice, formatting, and review tone for generated feedback.</p>
+              <p>Voice and formatting rules.</p>
             </div>
           </div>
-          <div class="action-group">
-            <button class="action-button selected" type="button" data-upload-type="style-guide">
-              Upload Style Guide
-              <span class="selected-indicator" aria-hidden="true"></span>
-            </button>
-          </div>
-          <p class="card-foot">Accepted: PDF, DOCX, MD</p>
+          <button class="action-button" type="button" data-type="style-guide">Select File</button>
+          <div class="status-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
         </article>
 
-        <article class="card">
+        <article class="card" id="card-goals-doc">
           <div class="card-head">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <path d="M5 4h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
-                <path d="M14 4v5h5" />
-                <path d="M8 14h8M8 18h6" />
-              </svg>
-            </div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 4h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M14 4v5h5"/><path d="M8 14h8M8 18h6"/></svg></div>
             <div>
               <h3>Goals Doc</h3>
-              <p>Provides project targets so comments stay aligned with intent.</p>
+              <p>Project targets and intent.</p>
             </div>
           </div>
-          <div class="action-group">
-            <button class="action-button" type="button" data-upload-type="goals-doc">
-              Upload Goals Doc
-              <span class="selected-indicator" aria-hidden="true"></span>
-            </button>
-          </div>
-          <p class="card-foot">Accepted: PDF, DOCX, TXT</p>
+          <button class="action-button" type="button" data-type="goals-doc">Select File</button>
+          <div class="status-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
         </article>
 
         <article class="card">
           <div class="card-head">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <path d="M3 12h11" />
-                <path d="M10 5l7 7-7 7" />
-                <path d="M17 5h4v14h-4" />
-              </svg>
-            </div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12h11M10 5l7 7-7 7M17 5h4v14h-4"/></svg></div>
             <div>
               <h3>Submit to Bot</h3>
-              <p>Send the uploaded inputs to the analysis pipeline.</p>
+              <p>Execute S3 upload and analysis.</p>
             </div>
           </div>
-          <div class="action-group">
-            <button class="action-button" type="button" data-upload-type="submit-bot">
-              Submit to Bot
-              <span class="selected-indicator" aria-hidden="true"></span>
-            </button>
-          </div>
-          <p class="card-foot">Requires both files uploaded.</p>
+          <button class="action-button" id="submit-all" type="button">Submit Batch</button>
         </article>
       </section>
 
       <section class="extras">
         <div class="panel">
-          <h4>How it works</h4>
-          <div class="steps">
-            <div class="step">
-              <span class="step-number">1</span>
-              <span>Upload style guide and goals doc to file storage.</span>
-            </div>
-            <div class="step">
-              <span class="step-number">2</span>
-              <span>Bot aligns review tone, priorities, and risk thresholds.</span>
-            </div>
-            <div class="step">
-              <span class="step-number">3</span>
-              <span>Submit to generate commentary and action notes.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h4>Upload Status</h4>
-          <div class="status" id="status" role="status" aria-live="polite">
-            Waiting for input.
-          </div>
-          <p class="card-foot">Files are stored with timestamps for traceability.</p>
+          <h4>Status Monitor</h4>
+          <div class="status" id="status">Awaiting file selection.</div>
         </div>
       </section>
 
-      <input id="style-guide-input" type="file" hidden />
-      <input id="goals-doc-input" type="file" hidden />
+      <input id="input-style-guide" type="file" hidden />
+      <input id="input-goals-doc" type="file" hidden />
     </main>
+
     <script>
-      // S3 CONFIGURATION
       AWS.config.update({
-        accessKeyId: 'AKIAQWCUE2HYE7ZJKC5I', 
-        secretAccessKey: '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', 
-        region: 'us-east-2' 
+        accessKeyId: 'AKIAQWCUE2HYE7ZJKC5I',
+        secretAccessKey: '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',
+        region: 'us-east-2'
       });
 
       const s3 = new AWS.S3();
-      const BUCKET_NAME = 'wenhook-bucket'; 
+      const BUCKET_NAME = 'wenhook-bucket';
+      const stagedFiles = { "style-guide": null, "goals-doc": null };
 
       const statusEl = document.getElementById("status");
-      const buttons = Array.from(document.querySelectorAll(".action-button"));
-      const inputMap = {
-        "style-guide": document.getElementById("style-guide-input"),
-        "goals-doc": document.getElementById("goals-doc-input"),
-      };
+      const submitBtn = document.getElementById("submit-all");
 
-      function setStatus(message, isError = false) {
-        statusEl.textContent = message;
-        statusEl.style.color = isError ? "#b91c1c" : "#1e293b";
-      }
-
-      function setSelected(button) {
-        buttons.forEach((btn) => btn.classList.remove("selected"));
-        button.classList.add("selected");
-      }
-
-      async function uploadFile(uploadType, file) {
-        setStatus(`Uploading ${file.name} to S3...`);
+      function updateUI(type, file) {
+        const card = document.getElementById(`card-${type}`);
+        const btn = card.querySelector('.action-button');
+        if (file) {
+          card.classList.add('file-ready');
+          btn.classList.add('active-selection');
+          btn.textContent = "Change File";
+        }
         
-        // Use a fixed key to ensure the previous file is overwritten
-        const params = {
-          Bucket: BUCKET_NAME,
-          Key: `${uploadType}/latest_version`, 
-          Body: file,
-          ContentType: file.type
-        };
-
-        try {
-          await s3.upload(params).promise();
-          setStatus(`File replaced: ${file.name}`);
-        } catch (err) {
-          console.error(err);
-          throw new Error(`S3 Upload failed: ${err.message}`);
+        const bothReady = stagedFiles["style-guide"] && stagedFiles["goals-doc"];
+        if (bothReady) {
+          submitBtn.classList.add('submit-ready');
+          statusEl.textContent = "Both files staged. Ready for S3 transmission.";
         }
       }
 
-      buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const uploadType = button.dataset.uploadType;
-          if (uploadType === "submit-bot") {
-            setSelected(button);
-            setStatus("Ready to submit.");
-            return;
-          }
-
-          const input = inputMap[uploadType];
-          if (!input) {
-            setStatus("Upload input not configured.", true);
-            return;
-          }
-
+      document.querySelectorAll('.action-button[data-type]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const type = btn.dataset.type;
+          const input = document.getElementById(`input-${type}`);
           input.click();
-          input.onchange = async () => {
-            if (!input.files || input.files.length === 0) {
-              return;
-            }
-            try {
-              setSelected(button);
-              await uploadFile(uploadType, input.files[0]);
-            } catch (error) {
-              setStatus(error.message, true);
-            } finally {
-              input.value = "";
+          input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+              stagedFiles[type] = file;
+              statusEl.textContent = `${type.replace('-', ' ')} staged: ${file.name}`;
+              updateUI(type, file);
             }
           };
         });
+      });
+
+      submitBtn.addEventListener('click', async () => {
+        if (!stagedFiles["style-guide"] || !stagedFiles["goals-doc"]) {
+          statusEl.textContent = "Error: Both files must be staged before submission.";
+          statusEl.style.color = "#b91c1c";
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Uploading...";
+        
+        try {
+          for (const [type, file] of Object.entries(stagedFiles)) {
+            statusEl.textContent = `Pushing ${type} to S3...`;
+            await s3.upload({
+              Bucket: BUCKET_NAME,
+              Key: `${type}/latest_version`,
+              Body: file,
+              ContentType: file.type
+            }).promise();
+          }
+          statusEl.textContent = "Success: Batch transmitted. Bot triggered.";
+          statusEl.style.color = "#10b981";
+          submitBtn.textContent = "Batch Complete";
+        } catch (err) {
+          statusEl.textContent = `Upload Error: ${err.message}`;
+          statusEl.style.color = "#b91c1c";
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Retry Submit";
+        }
       });
     </script>
   </body>
