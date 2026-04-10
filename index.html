@@ -277,6 +277,7 @@
       function updateUI(type, file) {
         const card = document.getElementById(`card-${type}`);
         const btn = card.querySelector('.action-button');
+        
         if (file) {
           card.classList.add('file-ready');
           btn.classList.add('active-selection');
@@ -285,9 +286,16 @@
         
         const bothReady = stagedFiles["style-guide"] && stagedFiles["goals-doc"];
         if (bothReady) {
-          submitBtn.classList.add('submit-ready');
-          statusEl.textContent = "Both files staged. Ready for S3 transmission.";
+          reArmSubmitButton();
         }
+      }
+
+      function reArmSubmitButton() {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('submit-ready');
+        submitBtn.textContent = "Submit Batch";
+        statusEl.textContent = "Files staged. Ready for transmission.";
+        statusEl.style.color = "var(--slate)";
       }
 
       document.querySelectorAll('.action-button[data-type]').forEach(btn => {
@@ -299,7 +307,6 @@
             const file = e.target.files[0];
             if (file) {
               stagedFiles[type] = file;
-              statusEl.textContent = `${type.replace('-', ' ')} staged: ${file.name}`;
               updateUI(type, file);
             }
           };
@@ -314,6 +321,7 @@
         }
 
         submitBtn.disabled = true;
+        submitBtn.classList.remove('submit-ready');
         submitBtn.textContent = "Uploading...";
         
         try {
@@ -326,14 +334,16 @@
               ContentType: file.type
             }).promise();
           }
-          statusEl.textContent = "Success: Batch transmitted. Bot triggered.";
+          statusEl.textContent = "Success: Batch transmitted.";
           statusEl.style.color = "#10b981";
           submitBtn.textContent = "Batch Complete";
+          // Button remains disabled until a file is changed
         } catch (err) {
           statusEl.textContent = `Upload Error: ${err.message}`;
           statusEl.style.color = "#b91c1c";
           submitBtn.disabled = false;
           submitBtn.textContent = "Retry Submit";
+          submitBtn.classList.add('submit-ready');
         }
       });
     </script>
